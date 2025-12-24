@@ -1,0 +1,167 @@
+body {
+  font-family: Inter, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  margin: 0;
+  padding: 16px;
+}
+
+.app {
+  max-width: 900px;
+  margin: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.cityForm {
+  width: 100%;
+  position: relative;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  background-color: #F1F1F1;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #F1F1F1;
+  border-radius: 12px;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.suggestion {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.suggestion:hover {
+  background: #eee;
+}
+
+.cityError {
+  width: 100%;
+  color: #c00;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.refreshBtn {
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  cursor: pointer;
+  background-color: #F1F1F1;
+  color: #333;
+  min-height: 50px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  background: #f7f7f7;
+  padding: 20px;
+  border-radius: 20px;
+  display: grid;
+  gap: 6px;
+  font-size: 18px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardHeader strong,
+.cardHeader .icon {
+  font-size: 22px;
+}
+
+.cardHeader strong {
+  margin-right: auto;
+}
+
+.cardHeader button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: white;
+  color: #333;
+}
+
+.card.cold {
+  background: #cee1ff;
+  color: #061A3B;
+}
+
+.card.mild {
+  background: #f1f1f1;
+}
+
+.card.warm {
+  background: #fff3e0;
+  color: #3B2708;
+}
+
+.card .content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card .content div:first-child {
+  font-size: 35px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+  .inputGroup {
+    flex-direction: column;
+  }
+}
