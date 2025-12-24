@@ -4,10 +4,10 @@ const cityInput = document.querySelector(".cityInput");
 const suggestionsEl = document.querySelector(".suggestions");
 const cityError = document.querySelector(".cityError");
 const refreshBtn = document.querySelector(".refreshBtn");
+const citySelector = document.querySelector(".citySelector");
 const dayLabels = ["Завтра", "Послезавтра"];
 
 let locations = JSON.parse(localStorage.getItem("locations")) || [];
-let lastSuggestions = [];
 
 function saveLocations() {
   localStorage.setItem("locations", JSON.stringify(locations));
@@ -37,6 +37,8 @@ function removeLocation(label) {
   if (cardToRemove) {
     cardsEl.removeChild(cardToRemove);
   }
+  updateCitySelector();
+  citySelector.value = "all";
 }
 
 function getWeatherStyle(temp) {
@@ -106,7 +108,7 @@ async function loadWeather(location) {
         row.textContent = temp + "°C";
       }
       else {
-        row.textContent = dayLabels[index-1] + ": " + temp + "°C";
+        row.textContent = dayLabels[index - 1] + ": " + temp + "°C";
       }
       content.appendChild(row);
     });
@@ -132,6 +134,7 @@ function addLocation(location) {
   locations.push(location);
   saveLocations();
   loadWeather(location);
+  updateCitySelector();
 }
 
 function requestGeo() {
@@ -151,8 +154,6 @@ function requestGeo() {
 
 async function loadCitySuggestions(query) {
   suggestionsEl.textContent = "";
-  lastSuggestions = [];
-
   if (query.length < 3) return;
 
   try {
@@ -165,9 +166,13 @@ async function loadCitySuggestions(query) {
     if (!response.ok) throw new Error();
 
     const data = await response.json();
-    if (!data.results) return;
-
-    lastSuggestions = data.results;
+    if (!data.results || data.results.length === 0) {
+      const item = document.createElement("div");
+      item.className = "suggestion no-results";
+      item.textContent = "Города не найдены";
+      suggestionsEl.appendChild(item);
+      return;
+    }
 
     data.results.forEach(city => {
       const item = document.createElement("div");
@@ -198,10 +203,35 @@ cityInput.addEventListener("input", () => {
   loadCitySuggestions(cityInput.value.trim());
 });
 
+function updateCitySelector() {
+  while (citySelector.options.length > 1) {
+    citySelector.remove(1);
+  }
+
+  locations.forEach((loc, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = loc.label;
+    citySelector.appendChild(option);
+  });
+}
+
+citySelector.addEventListener("change", () => {
+  const value = citySelector.value;
+  clearCards();
+  if (value === "all") {
+    updateAll();
+  } else {
+    const loc = locations[value];
+    loadWeather(loc);
+  }
+});
+
 refreshBtn.onclick = updateAll;
 
 if (locations.length === 0) {
   requestGeo();
 } else {
+  updateCitySelector();
   updateAll();
 }
