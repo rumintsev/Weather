@@ -127,6 +127,7 @@ async function updateAll() {
 }
 
 function addLocation(location) {
+  setStatus("")
   if (locationExists(location.label)) {
     cityError.textContent = "Этот город уже добавлен";
     return;
